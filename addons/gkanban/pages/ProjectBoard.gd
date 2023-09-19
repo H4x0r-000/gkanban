@@ -1,4 +1,4 @@
-tool
+@tool
 extends Control
 
 signal closed
@@ -15,32 +15,38 @@ var theme_name = null
 
 
 
-export (NodePath) var project_board_name_label_path:NodePath
-onready var project_board_name_label:Label = get_node(project_board_name_label_path)
+#@export (NodePath) var project_board_name_label_path:NodePath
+@export var project_board_name_label_path:NodePath
+@onready var project_board_name_label:Label = get_node(project_board_name_label_path)
 
-export (NodePath) var list_container_path:NodePath
-onready var list_container:HBoxContainer = get_node(list_container_path)
+#@export (NodePath) var list_container_path:NodePath
+@export var list_container_path:NodePath
+@onready var list_container:HBoxContainer = get_node(list_container_path)
 
-export (NodePath) var menu_container_path:NodePath
-onready var menu_container:Control = get_node(menu_container_path)
+#@export (NodePath) var menu_container_path:NodePath
+@export var menu_container_path:NodePath
+@onready var menu_container:Control = get_node(menu_container_path)
 
-export (NodePath) var project_board_name_and_edit_container_path:NodePath
-onready var project_board_name_and_edit_container:MarginContainer = get_node(project_board_name_and_edit_container_path)
+#@export (NodePath) var project_board_name_and_edit_container_path:NodePath
+@export var project_board_name_and_edit_container_path:NodePath
+@onready var project_board_name_and_edit_container:MarginContainer = get_node(project_board_name_and_edit_container_path)
 
-export (NodePath) var project_board_name_path:NodePath
-onready var project_board_name:Label = get_node(project_board_name_path)
+#@export (NodePath) var project_board_name_path:NodePath
+@export var project_board_name_path:NodePath
+@onready var project_board_name:Label = get_node(project_board_name_path)
 
-export (NodePath) var project_board_name_edit_path:NodePath
-onready var project_board_name_edit:LineEdit = get_node(project_board_name_edit_path)
+#@export (NodePath) var project_board_name_edit_path:NodePath
+@export var project_board_name_edit_path:NodePath
+@onready var project_board_name_edit:LineEdit = get_node(project_board_name_edit_path)
 
 
-onready var list_scene = preload('res://addons/gkanban/components/List.tscn')
-onready var card_scene = preload("res://addons/gkanban/components/Card.tscn")
+@onready var list_scene = preload('res://addons/gkanban/components/List.tscn')
+@onready var card_scene = preload("res://addons/gkanban/components/Card.tscn")
 
-onready var list_menu_scene = preload("res://addons/gkanban/components/ListMenu.tscn")
-onready var card_menu_scene = preload("res://addons/gkanban/components/CardMenu.tscn")
-onready var move_to_list_modal_scene = preload("res://addons/gkanban/components/MoveToListModal.tscn")
-onready var confirm_project_board_delete_scene = preload("res://addons/gkanban/components/ConfirmProjectBoardDeleteModal.tscn")
+@onready var list_menu_scene = preload("res://addons/gkanban/components/ListMenu.tscn")
+@onready var card_menu_scene = preload("res://addons/gkanban/components/CardMenu.tscn")
+@onready var move_to_list_modal_scene = preload("res://addons/gkanban/components/MoveToListModal.tscn")
+@onready var confirm_project_board_delete_scene = preload("res://addons/gkanban/components/ConfirmProjectBoardDeleteModal.tscn")
 
 var edit_mode_project_name:bool = false
 
@@ -57,10 +63,10 @@ func _ready():
 
 func _input(event):
 	if event is InputEventMouseMotion:
-		var _left_boundary = project_board_name_and_edit_container.rect_global_position.x
-		var _right_boundary = project_board_name_and_edit_container.rect_global_position.x + project_board_name_and_edit_container.rect_size.x
-		var _top_boundary = project_board_name_and_edit_container.rect_global_position.y
-		var _bottom_boundary = project_board_name_and_edit_container.rect_global_position.y + project_board_name_and_edit_container.rect_size.y
+		var _left_boundary = project_board_name_and_edit_container.global_position.x
+		var _right_boundary = project_board_name_and_edit_container.global_position.x + project_board_name_and_edit_container.size.x
+		var _top_boundary = project_board_name_and_edit_container.global_position.y
+		var _bottom_boundary = project_board_name_and_edit_container.global_position.y + project_board_name_and_edit_container.size.y
 
 		if event.position.x > _left_boundary and event.position.x < _right_boundary and event.position.y > _top_boundary and event.position.y < _bottom_boundary:
 			selected = true
@@ -68,7 +74,7 @@ func _input(event):
 			selected = false
 
 	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			if !edit_mode_project_name and selected:
 				enable_project_board_name_edit(true)
 			if !selected and edit_mode_project_name:
@@ -92,7 +98,8 @@ func set_app_theme(_theme_name: String)->void:
 	theme_name = _theme_name
 	for theme in theme_manager.themes:
 		if theme_name == theme.name:
-			$BG.get("custom_styles/panel").bg_color = theme.colors.pages.project_board.bg
+#			$BG.get("custom_styles/panel").bg_color = theme.colors.pages.project_board.bg
+			$BG.get("theme_override_styles/panel").bg_color = theme.colors.pages.project_board.bg
 			break
 
 func set_project_board(_project_board):
@@ -100,15 +107,15 @@ func set_project_board(_project_board):
 	project_board_name_label.text = _project_board.name
 
 	for list in project_board.lists:
-		var _list = list_scene.instance()
-		_list.connect("move_card_pressed",self,"_on_List_move_card_pressed",[],CONNECT_DEFERRED)
-		_list.connect("move_list_pressed",self,"_on_List_move_list_pressed",[],CONNECT_DEFERRED)
-		_list.connect("list_menu_pressed",self,"_on_List_list_menu_pressed",[],CONNECT_DEFERRED)
-		_list.connect("card_menu_pressed",self,"_on_List_card_menu_pressed",[],CONNECT_DEFERRED)
-		_list.connect("list_created",self,"_on_List_list_created",[],CONNECT_DEFERRED)
-		_list.connect("list_updated",self,"_on_List_list_updated",[],CONNECT_DEFERRED)
-		_list.connect("card_created",self,"_on_List_card_created",[],CONNECT_DEFERRED)
-		_list.connect("card_updated",self,"_on_List_card_updated",[],CONNECT_DEFERRED)
+		var _list = list_scene.instantiate()
+		_list.connect("move_card_pressed",Callable(self,"_on_List_move_card_pressed").bind(),CONNECT_DEFERRED)
+		_list.connect("move_list_pressed",Callable(self,"_on_List_move_list_pressed").bind(),CONNECT_DEFERRED)
+		_list.connect("list_menu_pressed",Callable(self,"_on_List_list_menu_pressed").bind(),CONNECT_DEFERRED)
+		_list.connect("card_menu_pressed",Callable(self,"_on_List_card_menu_pressed").bind(),CONNECT_DEFERRED)
+		_list.connect("list_created",Callable(self,"_on_List_list_created").bind(),CONNECT_DEFERRED)
+		_list.connect("list_updated",Callable(self,"_on_List_list_updated").bind(),CONNECT_DEFERRED)
+		_list.connect("card_created",Callable(self,"_on_List_card_created").bind(),CONNECT_DEFERRED)
+		_list.connect("card_updated",Callable(self,"_on_List_card_updated").bind(),CONNECT_DEFERRED)
 		list_container.add_child(_list)
 		_list.initialize_list(list)
 
@@ -118,15 +125,15 @@ func _on_BackButton_pressed():
 	queue_free()
 
 func create_list(_opitions = null):
-	var _list = list_scene.instance()
-	_list.connect("move_card_pressed",self,"_on_List_move_card_pressed",[],CONNECT_DEFERRED)
-	_list.connect("move_list_pressed",self,"_on_List_move_list_pressed",[],CONNECT_DEFERRED)
-	_list.connect("list_menu_pressed",self,"_on_List_list_menu_pressed",[],CONNECT_DEFERRED)
-	_list.connect("card_menu_pressed",self,"_on_List_card_menu_pressed",[],CONNECT_DEFERRED)
-	_list.connect("list_created",self,"_on_List_list_created",[],CONNECT_DEFERRED)
-	_list.connect("list_updated",self,"_on_List_list_updated",[],CONNECT_DEFERRED)
-	_list.connect("card_created",self,"_on_List_card_created",[],CONNECT_DEFERRED)
-	_list.connect("card_updated",self,"_on_List_card_updated",[],CONNECT_DEFERRED)
+	var _list = list_scene.instantiate()
+	_list.connect("move_card_pressed",Callable(self,"_on_List_move_card_pressed").bind(),CONNECT_DEFERRED)
+	_list.connect("move_list_pressed",Callable(self,"_on_List_move_list_pressed").bind(),CONNECT_DEFERRED)
+	_list.connect("list_menu_pressed",Callable(self,"_on_List_list_menu_pressed").bind(),CONNECT_DEFERRED)
+	_list.connect("card_menu_pressed",Callable(self,"_on_List_card_menu_pressed").bind(),CONNECT_DEFERRED)
+	_list.connect("list_created",Callable(self,"_on_List_list_created").bind(),CONNECT_DEFERRED)
+	_list.connect("list_updated",Callable(self,"_on_List_list_updated").bind(),CONNECT_DEFERRED)
+	_list.connect("card_created",Callable(self,"_on_List_card_created").bind(),CONNECT_DEFERRED)
+	_list.connect("card_updated",Callable(self,"_on_List_card_updated").bind(),CONNECT_DEFERRED)
 	list_container.add_child(_list)
 	if _opitions == null:
 		_list.start(list_container.get_child_count())
@@ -158,13 +165,13 @@ func delete_menus():
 
 func _on_List_card_menu_pressed(_list, _card):
 	delete_menus()
-	var _menu = card_menu_scene.instance()
-	_menu.connect("move_card_pressed",self, "_on_CardMenu_move_card_pressed",[],CONNECT_DEFERRED)
-	_menu.connect("delete_card_pressed",self, "_on_CardMenu_delete_card_pressed",[],CONNECT_DEFERRED)
+	var _menu = card_menu_scene.instantiate()
+	_menu.connect("move_card_pressed",Callable(self,"_on_CardMenu_move_card_pressed").bind(),CONNECT_DEFERRED)
+	_menu.connect("delete_card_pressed",Callable(self,"_on_CardMenu_delete_card_pressed").bind(),CONNECT_DEFERRED)
 	menu_container.add_child(_menu)
-	var _x_pos = _card.rect_global_position.x + _card.rect_size.x - 36
-	var _y_pos = _card.rect_global_position.y + 36
-	_menu.rect_global_position = Vector2(_x_pos,_y_pos)
+	var _x_pos = _card.global_position.x + _card.size.x - 36
+	var _y_pos = _card.global_position.y + 36
+	_menu.global_position = Vector2(_x_pos,_y_pos)
 	_menu.setup_list_card(_list, _card)
 
 
@@ -173,7 +180,8 @@ func _on_CardMenu_delete_card_pressed(_list, _card):
 	var i = 0
 	for card in _list.list.cards:
 		if card.id == _card.card.id:
-			_list.list.cards.remove(i)
+#			_list.list.cards.remove(i)
+			_list.list.cards.remove_at(i)
 			break
 		i += 1
 	emit_signal("list_updated",self,_list)
@@ -238,8 +246,8 @@ func _on_CardMenu_move_card_pressed(_list, _card, _direction):
 		"list":
 			if list_container.get_child_count() <= 1:
 				return
-			var _move_to_list_modal = move_to_list_modal_scene.instance()
-			_move_to_list_modal.connect('list_menu_button_pressed',self,'_on_MoveToListModal_list_menu_button_pressed',[_list],CONNECT_DEFERRED)
+			var _move_to_list_modal = move_to_list_modal_scene.instantiate()
+			_move_to_list_modal.connect('list_menu_button_pressed',Callable(self,'_on_MoveToListModal_list_menu_button_pressed').bind(_list),CONNECT_DEFERRED)
 			menu_container.add_child(_move_to_list_modal)
 			for singleList in list_container.get_children():
 				if singleList != _list:
@@ -257,14 +265,14 @@ func _on_MoveToListModal_list_menu_button_pressed(_list, _card, _from_list):
 
 func _on_List_list_menu_pressed(_list):
 	delete_menus()
-	var _menu = list_menu_scene.instance()
-	_menu.connect("delete_list_pressed",self,"_on_ListMenu_delete_list_pressed",[],CONNECT_DEFERRED)
-	_menu.connect("move_list_pressed",self,"_on_ListMenu_move_list_pressed",[],CONNECT_DEFERRED)
+	var _menu = list_menu_scene.instantiate()
+	_menu.connect("delete_list_pressed",Callable(self,"_on_ListMenu_delete_list_pressed").bind(),CONNECT_DEFERRED)
+	_menu.connect("move_list_pressed",Callable(self,"_on_ListMenu_move_list_pressed").bind(),CONNECT_DEFERRED)
 	_menu.set_list(_list)
 	menu_container.add_child(_menu)
-	var _x_pos = _list.rect_global_position.x + _list.rect_size.x - 36
-	var _y_pos = _list.rect_global_position.y + 36
-	_menu.rect_global_position = Vector2(_x_pos,_y_pos)
+	var _x_pos = _list.global_position.x + _list.size.x - 36
+	var _y_pos = _list.global_position.y + 36
+	_menu.global_position = Vector2(_x_pos,_y_pos)
 
 func _on_ListMenu_move_list_pressed(_list, _direction):
 	move_list(_list, _direction)
@@ -273,7 +281,8 @@ func _on_ListMenu_move_list_pressed(_list, _direction):
 
 func _on_ListMenu_delete_list_pressed(_list):
 	var _list_index = get_list_index(_list)
-	project_board.lists.remove(_list_index)
+#	project_board.lists.remove(_list_index)
+	project_board.lists.remove_at(_list_index)
 
 	for list in list_container.get_children():
 		if list == _list:
@@ -360,8 +369,8 @@ func _on_ProjectBoardNameEdit_text_entered(new_text:String):
 
 func _on_DeleteButton_pressed():
 	delete_menus()
-	var _dialog = confirm_project_board_delete_scene.instance()
-	_dialog.connect("project_board_deleted",self,"_on_MenuConfirmProjectBoardDelete_project_board_deleted",[],CONNECT_DEFERRED)
+	var _dialog = confirm_project_board_delete_scene.instantiate()
+	_dialog.connect("project_board_deleted",Callable(self,"_on_MenuConfirmProjectBoardDelete_project_board_deleted").bind(),CONNECT_DEFERRED)
 	menu_container.add_child(_dialog)
 	_dialog.set_project_board(project_board)
 

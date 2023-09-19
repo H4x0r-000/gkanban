@@ -1,4 +1,4 @@
-tool
+@tool
 extends Control
 
 var dbms = preload("res://addons/gkanban/scripts/dbms.gd").new()
@@ -20,9 +20,9 @@ func _ready():
 	load_start_page()
 
 func load_start_page():
-	var start_page = pages[0].scene.instance()
-	start_page.connect("project_board_added",self,"_on_StartPage_project_board_added",[],CONNECT_DEFERRED)
-	start_page.connect("project_board_selected",self,"_on_StartPage_project_board_selected",[],CONNECT_DEFERRED)
+	var start_page = pages[0].scene.instantiate()
+	start_page.connect("project_board_added",Callable(self,"_on_StartPage_project_board_added").bind(),CONNECT_DEFERRED)
+	start_page.connect("project_board_selected",Callable(self,"_on_StartPage_project_board_selected").bind(),CONNECT_DEFERRED)
 	add_child(start_page)
 	start_page.set_app_theme(dbms.settings_options.theme)
 	start_page.set_project_boards(dbms.project_boards)
@@ -40,14 +40,14 @@ func reload_project_board(_project_board):
 
 func load_project_board(_project_board):
 	
-	var project_board = pages[1].scene.instance()
-	project_board.connect("closed",self,"_on_Project_board_closed",[],CONNECT_DEFERRED)
-	project_board.connect("updated",self,"_on_Project_board_updated",[],CONNECT_DEFERRED)
-	project_board.connect("deleted",self,"_on_Project_board_deleted",[],CONNECT_DEFERRED)
-	project_board.connect("list_created",self,"_on_Project_board_list_created",[],CONNECT_DEFERRED)
-	project_board.connect("list_updated",self,"_on_Project_board_list_updated",[],CONNECT_DEFERRED)
-	project_board.connect("card_created",self,"_on_Project_board_card_created",[],CONNECT_DEFERRED)
-	project_board.connect("card_updated",self,"_on_Project_board_card_updated",[],CONNECT_DEFERRED)
+	var project_board = pages[1].scene.instantiate()
+	project_board.connect("closed",Callable(self,"_on_Project_board_closed").bind(),CONNECT_DEFERRED)
+	project_board.connect("updated",Callable(self,"_on_Project_board_updated").bind(),CONNECT_DEFERRED)
+	project_board.connect("deleted",Callable(self,"_on_Project_board_deleted").bind(),CONNECT_DEFERRED)
+	project_board.connect("list_created",Callable(self,"_on_Project_board_list_created").bind(),CONNECT_DEFERRED)
+	project_board.connect("list_updated",Callable(self,"_on_Project_board_list_updated").bind(),CONNECT_DEFERRED)
+	project_board.connect("card_created",Callable(self,"_on_Project_board_card_created").bind(),CONNECT_DEFERRED)
+	project_board.connect("card_updated",Callable(self,"_on_Project_board_card_updated").bind(),CONNECT_DEFERRED)
 	project_board.set_app_theme(dbms.settings_options.theme)
 	add_child(project_board)
 	project_board.set_project_board(_project_board)

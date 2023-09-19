@@ -1,4 +1,4 @@
-tool
+@tool
 extends Control
 
 signal project_board_deleted(_project_board_deleted)

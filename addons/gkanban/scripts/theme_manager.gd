@@ -8,10 +8,12 @@ var themes = [
 		"colors":{
 			"pages":{
 				"start_page":{
-					"bg":Color("#FF383F51")
+#					"bg":Color("#FF383F51")
+					"bg":Color("#383f51")
 				},
 				"project_board":{
-					"bg":Color("#FF383F51")
+#					"bg":Color("#FF383F51")
+					"bg":Color("#383f51")
 				},
 			}
 		}

@@ -1,4 +1,4 @@
-tool
+@tool
 extends Control
 
 signal move_list_pressed(_list, _direction)
@@ -11,10 +11,10 @@ var list = null
 
 func _input(event):
 	if event is InputEventMouseMotion:
-		var _left_boundary = $BG.rect_global_position.x
-		var _right_boundary = $BG.rect_global_position.x + $BG.rect_size.x
-		var _top_boundary = $BG.rect_global_position.y
-		var _bottom_boundary = $BG.rect_global_position.y + $BG.rect_size.y
+		var _left_boundary = $BG.global_position.x
+		var _right_boundary = $BG.global_position.x + $BG.size.x
+		var _top_boundary = $BG.global_position.y
+		var _bottom_boundary = $BG.global_position.y + $BG.size.y
 
 		if event.position.x > _left_boundary and event.position.x < _right_boundary and event.position.y > _top_boundary and event.position.y < _bottom_boundary:
 			selected = true
@@ -22,7 +22,7 @@ func _input(event):
 			selected = false
 
 	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			if !selected:
 				
 				queue_free()

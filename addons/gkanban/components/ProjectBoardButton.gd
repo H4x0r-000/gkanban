@@ -1,4 +1,4 @@
-tool
+@tool
 extends Button
 
 signal project_board_selected(_project)

@@ -1,4 +1,4 @@
-tool
+@tool
 extends PanelContainer
 
 signal move_card_pressed(_card,_direction)
@@ -14,38 +14,49 @@ var card = {
 }
 
 
-export (NodePath) var title_path:NodePath
-onready var title:RichTextLabel = get_node(title_path)
+#@export (NodePath) var title_path:NodePath
+@export var title_path:NodePath
+@onready var title:RichTextLabel = get_node(title_path)
 
-export (NodePath) var title_edit_path:NodePath
-onready var title_edit:TextEdit = get_node(title_edit_path)
+#@export (NodePath) var title_edit_path:NodePath
+@export var title_edit_path:NodePath
+@onready var title_edit:TextEdit = get_node(title_edit_path)
 
-export (NodePath) var card_buttons_container_path:NodePath
-onready var card_buttons_container:HBoxContainer = get_node(card_buttons_container_path)
+#@export (NodePath) var card_buttons_container_path:NodePath
+@export var card_buttons_container_path:NodePath
+@onready var card_buttons_container:HBoxContainer = get_node(card_buttons_container_path)
 
-export (NodePath) var card_title_and_edit_container_path:NodePath
-onready var card_title_and_edit_container:MarginContainer = get_node(card_title_and_edit_container_path)
+#@export (NodePath) var card_title_and_edit_container_path:NodePath
+@export var card_title_and_edit_container_path:NodePath
+@onready var card_title_and_edit_container:MarginContainer = get_node(card_title_and_edit_container_path)
 
-export (NodePath) var card_title_container_path:NodePath
-onready var card_title_container:MarginContainer = get_node(card_title_container_path)
+#@export (NodePath) var card_title_container_path:NodePath
+@export var card_title_container_path:NodePath
+@onready var card_title_container:MarginContainer = get_node(card_title_container_path)
 
-export (NodePath) var card_title_edit_container_path:NodePath
-onready var card_title_edit_container:MarginContainer = get_node(card_title_edit_container_path)
+#@export (NodePath) var card_title_edit_container_path:NodePath
+@export var card_title_edit_container_path:NodePath
+@onready var card_title_edit_container:MarginContainer = get_node(card_title_edit_container_path)
 
-export (NodePath) var buttons_bg_path:NodePath
-onready var buttons_bg:PanelContainer = get_node(buttons_bg_path)
+#@export (NodePath) var buttons_bg_path:NodePath
+@export var buttons_bg_path:NodePath
+@onready var buttons_bg:PanelContainer = get_node(buttons_bg_path)
 
-export (NodePath) var radio_default_btn_path:NodePath
-onready var radio_default_btn:CheckBox = get_node(radio_default_btn_path)
+#@export (NodePath) var radio_default_btn_path:NodePath
+@export var radio_default_btn_path:NodePath
+@onready var radio_default_btn:CheckBox = get_node(radio_default_btn_path)
 
-export (NodePath) var radio_green_btn_path:NodePath
-onready var radio_green_btn:CheckBox = get_node(radio_green_btn_path)
+#@export (NodePath) var radio_green_btn_path:NodePath
+@export var radio_green_btn_path:NodePath
+@onready var radio_green_btn:CheckBox = get_node(radio_green_btn_path)
 
-export (NodePath) var radio_red_btn_path:NodePath
-onready var radio_red_btn:CheckBox = get_node(radio_red_btn_path)
+#@export (NodePath) var radio_red_btn_path:NodePath
+@export var radio_red_btn_path:NodePath
+@onready var radio_red_btn:CheckBox = get_node(radio_red_btn_path)
 
-export (NodePath) var radio_yellow_btn_path:NodePath
-onready var radio_yellow_btn:CheckBox = get_node(radio_yellow_btn_path)
+#@export (NodePath) var radio_yellow_btn_path:NodePath
+@export var radio_yellow_btn_path:NodePath
+@onready var radio_yellow_btn:CheckBox = get_node(radio_yellow_btn_path)
 
 var selected :bool = false
 
@@ -57,20 +68,20 @@ var card_color:= "default"
 
 var colors:= {
 	"default":{
-		"normal": Color("#ff819aa9"),
-		"hover": Color("#ff8da2af")
+		"normal": Color("#819aa9ff"),
+		"hover": Color("#8da2afff")
 	},
 	"green":{
-		"normal": Color("#ff21C063"),
-		"hover": Color("#ff23D16C")
+		"normal": Color("#21C063ff"),
+		"hover": Color("#23D16Cff")
 	},
 	"red":{
-		"normal": Color("#ffC1334D"),
-		"hover": Color("#ffCC3E58")
+		"normal": Color("#C1334Dff"),
+		"hover": Color("#CC3E58ff")
 	},
 	"yellow":{
-		"normal": Color("#ff2374AB"),
-		"hover": Color("#ff267FBA")
+		"normal": Color("#2374ABff"),
+		"hover": Color("#267FBAff")
 	}
 }
 
@@ -79,52 +90,57 @@ func _ready():
 	edit_mode(false)
 
 func start(_card_number):
-	title.bbcode_text = str("[Card #",_card_number,"]")
+	title.text = str("[Card #",_card_number,"]")
 	card ={
-		"title":title.bbcode_text,
+		"title":title.text,
 		"color":"default"
 	}
-	radio_default_btn.pressed = true
+	radio_default_btn.button_pressed = true
 	emit_signal("created",self)
 
 func setup_card(_card_data):
 	card = _card_data
-	title.bbcode_text = _card_data.title
+	title.text = _card_data.title
 	card_color = _card_data.color
 
-	radio_default_btn.pressed = true
-	radio_red_btn.pressed = true
-	radio_green_btn.pressed = true
-	radio_yellow_btn.pressed = true
+	radio_default_btn.button_pressed = true
+	radio_red_btn.button_pressed = true
+	radio_green_btn.button_pressed = true
+	radio_yellow_btn.button_pressed = true
 
 	match card_color:
 		"default":
-			radio_default_btn.pressed = true
+			radio_default_btn.button_pressed = true
 		"green":
 
-			radio_green_btn.pressed = true
+			radio_green_btn.button_pressed = true
 		"red":
-			radio_red_btn.pressed = true
+			radio_red_btn.button_pressed = true
 		"yellow":
-			radio_yellow_btn.pressed = true
+			radio_yellow_btn.button_pressed = true
 
 func _process(delta):
 	if selected:
-		get("custom_styles/panel").bg_color = Color("#ffdae2e7")
+#		get("custom_styles/panel").bg_color = Color("#ffdae2e7")
+		get("theme_override_styles/panel").bg_color = Color("#dae2e7ff")
 		card_buttons_container.modulate = Color(1,1,1,1)
-		buttons_bg.get("custom_styles/panel").bg_color = colors.get(card_color).hover
+#		buttons_bg.get("custom_styles/panel").bg_color = colors.get(card_color).hover
+		buttons_bg.get("theme_override_styles/panel").bg_color = colors.get(card_color).hover
 	else:
-		get("custom_styles/panel").bg_color = Color("#ffc9d5dc")
+#		get("custom_styles/panel").bg_color = Color("#ffc9d5dc")
+		get("theme_override_styles/panel").bg_color = Color("#c9d5dcff")
 		card_buttons_container.modulate = Color(1,1,1,0)
-		buttons_bg.get("custom_styles/panel").bg_color = colors.get(card_color).normal
+#		buttons_bg.get("custom_styles/panel").bg_color = colors.get(card_color).normal
+		buttons_bg.get("theme_override_styles/panel").bg_color = colors.get(card_color).normal
+		#c9d5dc
 
 
 func _input(event):
 	if event is InputEventMouseMotion:
-		var _left_boundary = rect_global_position.x
-		var _right_boundary = rect_global_position.x + rect_size.x
-		var _top_boundary = rect_global_position.y
-		var _bottom_boundary = rect_global_position.y + rect_size.y
+		var _left_boundary = global_position.x
+		var _right_boundary = global_position.x + size.x
+		var _top_boundary = global_position.y
+		var _bottom_boundary = global_position.y + size.y
 
 		if event.position.x > _left_boundary and event.position.x < _right_boundary and event.position.y > _top_boundary and event.position.y < _bottom_boundary:
 			selected = true
@@ -132,7 +148,7 @@ func _input(event):
 			selected = false
 			
 	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			if !quick_edit_on and selected and can_switch_to_quick_edit:
 				edit_mode(true)
 
@@ -141,7 +157,7 @@ func _input(event):
 
 func _unhandled_input(event):
 	if event is InputEventKey:
-		if event.pressed and event.scancode == KEY_ESCAPE:
+		if event.pressed and event.keycode == KEY_ESCAPE:
 			if quick_edit_on:
 				edit_mode(false)
 
@@ -150,7 +166,7 @@ func edit_mode(_enable:bool):
 		quick_edit_on = true
 		card_title_edit_container.show()
 		card_title_container.hide()
-		title_edit.text = title.bbcode_text
+		title_edit.text = title.text
 		title_edit.select_all()
 	else:
 		quick_edit_on = false
@@ -214,8 +230,8 @@ func _on_CancelEditButton_pressed():
 
 
 func _on_SaveChangesButton_pressed():
-	title.bbcode_text = title_edit.text
-	card.title = title.bbcode_text
+	title.text = title_edit.text
+	card.title = title.text
 	emit_signal("updated",self)
 	edit_mode(false)
 

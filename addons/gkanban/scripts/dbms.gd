@@ -8,21 +8,26 @@ var projects_path = SAVE_DIR+"project_boards.dat"
 var project_boards = []
 
 func save_settings(_data):
-	var dir = Directory.new()
-	if !dir.dir_exists(SAVE_DIR):
-		dir.make_dir_recursive(SAVE_DIR)
+#	var dir = Directory.new()
+#	if !dir.dir_exists(SAVE_DIR):
+	if !DirAccess.dir_exists_absolute(SAVE_DIR):
+#		dir.make_dir_recursive(SAVE_DIR)
+		DirAccess.make_dir_recursive_absolute(SAVE_DIR)
 		
-	var file = File.new()
-	var error = file.open(settings_path, File.WRITE)
-	if error == OK:
+#	var file = File.new()
+#	var error = file.open(settings_path, File.WRITE)
+	var file = FileAccess.open(settings_path, FileAccess.WRITE)
+	if file.get_error() == OK:
 		file.store_var(_data)
 		file.close()
 
 func load_settings():
-	var file = File.new()
-	if file.file_exists(settings_path):
-		var error = file.open(settings_path, File.READ)
-		if error == OK:
+#	var file = File.new()
+#	if file.file_exists(settings_path):
+	if FileAccess.file_exists(settings_path):
+#		var error = file.open(settings_path, File.READ)
+		var file = FileAccess.open(settings_path, FileAccess.READ)
+		if file.get_error() == OK:
 			settings_options = file.get_var()
 			file.close()
 	else:
@@ -34,10 +39,11 @@ func get_project_boards():
 	return project_boards
 
 func load_projects():
-	var file = File.new()
-	if file.file_exists(projects_path):
-		var error = file.open(projects_path, File.READ)
-		if error == OK:
+#	var file = File.new()
+#	if file.file_exists(projects_path):
+	if FileAccess.file_exists(projects_path):
+		var file = FileAccess.open(projects_path, FileAccess.READ)
+		if file.get_error() == OK:
 			project_boards = file.get_var()
 			file.close()
 	else:
@@ -48,7 +54,8 @@ func delete_project(_project_board):
 	var i = 0
 	for project in project_boards:
 		if project.id == _project_board.id:
-			project_boards.remove(i)
+#			project_boards.remove(i)
+			project_boards.remove_at(i)
 			break
 		i += 1
 	save_project_boards(project_boards)
@@ -98,14 +105,15 @@ func add_moved_card_to_list(_project_board, _list, _card):
 	save_project_boards(project_boards)
 
 func save_project_boards(_data):
-	var file = File.new()
-	var error = file.open(projects_path, File.WRITE)
-	if error == OK:
+#	var file = File.new()
+#	var error = file.open(projects_path, File.WRITE)
+	var file = FileAccess.open(projects_path, FileAccess.WRITE)
+	if file.get_error() == OK:
 		file.store_var(_data)
 		file.close()
 
 func get_datetime_as_id():
-	var _date_time = OS.get_datetime()
+	var _date_time = Time.get_datetime_dict_from_system()
 	return str(_date_time.year,_date_time.month,_date_time.day,_date_time.weekday,_date_time.hour,_date_time.minute,_date_time.second)
 
 func update_list(_project_board, _list):
@@ -130,7 +138,7 @@ func update_project_board(_project_board):
 
 func add_project_board(_project_board):
 	var _new_project: Dictionary = {}
-	var _date_time = OS.get_datetime()
+	var _date_time = Time.get_datetime_dict_from_system()
 	var _created_at = str(_date_time.year,"-",_date_time.month,"-",_date_time.day," ",_date_time.hour,":",_date_time.minute,":",_date_time.second)
 	var _updated_at = str(_date_time.year,"-",_date_time.month,"-",_date_time.day," ",_date_time.hour,":",_date_time.minute,":",_date_time.second)
 	_new_project = {

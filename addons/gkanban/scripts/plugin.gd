@@ -1,26 +1,26 @@
-tool
+@tool
 extends EditorPlugin
 
-var plugin_interface = preload("res://addons/gkanban/components/PluginInterface.tscn").instance()
+var plugin_interface = preload("res://addons/gkanban/components/PluginInterface.tscn").instantiate()
 
 func _enter_tree():
-	get_editor_interface().get_editor_viewport().add_child(plugin_interface)
-	make_visible(false)
+	get_editor_interface().get_editor_main_screen().add_child(plugin_interface)
+	_make_visible(false)
 
 
 func _exit_tree():
 	if plugin_interface:
 		plugin_interface.queue_free()
 		
-func has_main_screen()->bool:
+func _has_main_screen()->bool:
 	return true
 	
-func get_plugin_name()-> String:
+func _get_plugin_name()-> String:
 	return "G-Kanban"
 	
-func get_plugin_icon():
+func _get_plugin_icon():
 	return preload("res://addons/gkanban/assets/icons/svg/gkanban_icon.svg")
 	
-func make_visible(visible:bool)->void:
+func _make_visible(visible:bool)->void:
 	if plugin_interface:
 		plugin_interface.visible = visible
