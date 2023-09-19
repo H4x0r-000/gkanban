@@ -9,7 +9,7 @@ Use kanban project boards in the Godot Editor. G-Kanban provides similar functio
 ### [Watch G-Kanban Release video on Youtube](https://youtu.be/wphLTOBDn1s)
 
 ## About this fork
-This a port of G-Kanban to Godot 4, all credit belongs to [Leon Oscar Kidando](https://github.com/kidando/gkanban).
+This is a port of G-Kanban to Godot 4, all credit belongs to [Leon Oscar Kidando](https://github.com/kidando/gkanban).
 
 ## Current Release
 This is currently an **Alpha** release of the project. Now that I have gotten everything to work on the front-end, I plan to re-write the backend for readability, better maintainability and scalability. A lot of "bilities". Some front-end things could change. I will prioritize keeping things backwards compatible because I don't see why the saved data "structure" should change.
