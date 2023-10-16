@@ -21,7 +21,3 @@ enabled=PackedStringArray("res://addons/gkanban/plugin.cfg")
 [physics]
 
 common/enable_pause_aware_picking=true
-
-[rendering]
-
-environment/defaults/default_environment="res://default_env.tres"

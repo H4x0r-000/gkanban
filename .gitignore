@@ -2,3 +2,5 @@
 /.external
 /.godot
 /addons/godot-plugin-refresher/
+
+*.import
