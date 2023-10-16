@@ -71,7 +71,7 @@ horizontal_alignment = 1
 
 [node name="VersionLabel" type="Label" parent="BG/VBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Version 0.1.0g4
+text = "Version 0.1.1g4
 "
 label_settings = SubResource("LabelSettings_d0wmi")
 horizontal_alignment = 1
